@@ -1,0 +1,84 @@
+#include<iostream>
+using namespace std;
+class Stack
+{
+    public:
+    int sizee;
+    int *s;
+    int top;
+
+int isEmpty()
+{
+    if(top==-1)return 1;
+    else return 0;
+}
+int isFull()
+{
+    if(top==sizee-1)return 1;
+    else return 0;
+}
+void push(Stack *st,int element)
+{
+   if(isFull()){cout<<"Stack overflow"<<endl;}
+   else
+   {
+     st->top++;
+     st->s[st->top]=element;
+   }
+}
+void display(Stack st)
+{
+    for(int i=0;i<=st.top;i++)
+    {
+        cout<<st.s[i]<<endl;
+    }
+}
+int pop(Stack *st)
+{
+    int x=-1;
+    if(isEmpty()){cout<<"Stack is empty"<<endl;}
+    else if(st->top<=st->sizee-1)
+    {
+
+         x=st->s[st->top];
+         st->top--;
+         return x;
+
+    }
+       return x;
+}
+int peek(Stack st,int pos)
+{
+    if(((st.top-pos)+1)>=0&&((st.top-pos)+1)<=(st.sizee-1))
+    {
+        return st.s[st.top-pos+1];
+    }
+    return -1;
+}
+int stackTop(Stack st)
+{
+    if(isEmpty()){return -1;}
+    else
+    {
+        return st.s[st.top];
+    }
+}
+
+};
+
+int main()
+{
+    Stack st;
+    cout<<"Enter the size of the stack"<<endl;
+    cin>>st.sizee;
+    st.top=-1;
+    st.s=new int[st.sizee];
+    st.push(&st,1);
+    st.push(&st,2);
+    st.push(&st,3);st.push(&st,4);st.push(&st,5);
+    st.display(st);
+    cout<<st.stackTop(st);
+
+
+
+}
