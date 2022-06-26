@@ -1,0 +1,78 @@
+#include<iostream>
+using namespace std;
+class Node
+{
+    public:
+    int data;
+    int top;
+    Node *next;
+}*top;
+int isEmpty()
+{
+    if(top==nullptr)
+        {return 1;}
+        else{return 0;}
+}
+void push(int element)
+{
+    Node *t=new Node;
+    if(t==nullptr){cout<<"Stack overflow"<<endl;}
+    else
+    {
+        t->data=element;
+        t->next=top;
+        top=t;
+
+    }
+}
+int pop()
+{
+    int result=-1;
+    if(isEmpty()){cout<<"Can't pop stack is empty"<<endl;}
+    else
+    {
+        Node *h=new Node;
+        h=top;
+        top=top->next;
+        result=h->data;
+        delete h;
+    }
+     return result;
+}
+void stacktop()
+{
+    if(isEmpty()){cout<<"Can't pop stack is empty"<<endl;
+    }
+
+    else
+    {
+           if(top){cout<<top->data<<endl;}
+    }
+
+}
+int peek(int pos)
+{
+    Node *p=new Node;
+    int result=-1;
+    if(isEmpty()){cout<<"Can't pop stack is empty"<<endl;}
+    else
+    {
+        p=top;
+        for(int i=0;i<pos-1&&p!=nullptr;i++){p=p->next;}
+        result=p->data;
+
+    }
+    if(p){
+     return result;}
+     else
+     {
+         return -1;
+     }
+}
+
+int main()
+{
+  push(1);
+  push(2);
+  cout<<peek(2);
+}
