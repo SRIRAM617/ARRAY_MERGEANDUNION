@@ -1,0 +1,74 @@
+#include<iostream>
+using namespace std;
+class NodeL
+{
+    public:
+  int data;
+  NodeL *next;
+}*first=nullptr,*last=nullptr;
+
+
+
+int isEmpty()
+{
+    if(first==nullptr)
+    {
+        return 1;
+    }
+    return 0;
+}
+void enqueue(int x)
+{
+    if(isEmpty())
+    {
+    NodeL *temp=new NodeL;
+    temp->data=x;
+    first=temp;
+    last=temp;
+    last->next=nullptr;
+    }
+
+
+    else
+    {
+        NodeL *temp=new NodeL;
+        temp->data=x;
+        last->next=temp;
+        last=temp;
+        temp->next=nullptr;
+    }
+
+}
+int dequeue()
+{
+    int y=-1;
+    NodeL *p=first;
+    if(!isEmpty())
+    {
+        first=first->next;
+        y=p->data;
+        delete p;
+        return y;
+    }
+    return y;
+
+
+}
+void display(NodeL *p)
+{
+    while(p!=nullptr)
+    {
+        cout<<p->data;
+        p=p->next;
+    }
+}
+int main()
+{
+   enqueue(5);
+   enqueue(6);
+   enqueue(7);
+   display(first);
+   cout<<dequeue();
+   cout<<dequeue();
+   cout<<dequeue();
+}
