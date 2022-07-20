@@ -1,0 +1,306 @@
+#include <iostream>
+#include "queue.h"
+#include "stack.h"
+#include <stack>
+Node* root=nullptr;
+using namespace std;
+class BinaryTree
+{
+  public:
+
+  void createBTree(int key);
+
+  Node* BSTSearch(Node *p,int key);
+   Node* RBSTSearch(Node *p,int key);
+   void insertNode(Node *p,int value);
+   Node* Rinsert(Node* p,int key);
+   void levelOrder(Node* p);
+   void Inorder(Node *p);
+   Node* Delete(Node* p,int key);
+   int Height(Node* p);
+   Node* InPre(Node* p);
+   Node* InSucc(Node *p);
+   void createBTreeFromPreorder(int *pre,int n);
+   void preorder(Node *p);
+
+
+};
+void BinaryTree::createBTree(int key)
+{
+    Node *t;
+    Node *r=root;
+    Node *p;
+   if(root==nullptr)
+   {
+       p=new Node;
+       p->data=key;
+       p->lchild=p->rchild=nullptr;
+       root=p;
+       return;
+   }
+   while(r!=nullptr)
+   {
+      t=r;
+      if(r->data<key)
+      {
+          r=r->rchild;
+      }
+      else if(r->data>key)
+      {
+          r=r->lchild;
+      }
+   }
+       p=new Node;
+       p->data=key;
+       p->lchild=p->rchild=nullptr;
+   if(t->data>key)
+   {
+
+       t->lchild=p;
+   }
+   else if(t->data<key)
+   {
+
+       t->rchild=p;
+   }
+
+
+
+
+}
+
+Node* BinaryTree::BSTSearch(Node *p,int key)
+{
+    while(p!=nullptr)
+    {
+        if(p->data==key){return p;}
+        else if(p->data<key)
+        {
+            p=p->rchild;
+        }
+        else{p=p->lchild;}
+    }
+    return nullptr;
+}
+Node* BinaryTree::RBSTSearch(Node *p,int key)
+{
+    if(p==nullptr){return nullptr;}
+    if(p->data==key){return p;}
+        else if(p->data<key)
+        {
+            return RBSTSearch(p->rchild,key);
+        }
+        else{return RBSTSearch(p->lchild,key);}
+
+    return nullptr;
+}
+void BinaryTree::insertNode(Node *p,int value)
+{
+    Node *tail=nullptr;
+    Node *temp;
+
+    while(p!=nullptr)
+    {
+        tail=p;
+    if(p->data==value){return;}
+    else if(p->data<value)
+    {
+        p=p->rchild;
+
+    }
+    else
+    {
+        p=p->lchild;
+
+    }
+    }
+    if(tail->data<value)
+    {
+        temp=new Node;
+        temp->data=value;
+        temp->lchild=temp->rchild=nullptr;
+        tail->rchild=temp;
+    }
+    else if(tail->data>value)
+    {
+        temp=new Node;
+        temp->data=value;
+        temp->lchild=temp->rchild=nullptr;
+        tail->lchild=temp;
+    }
+
+}
+Node* BinaryTree::Rinsert(Node* p,int key)
+{
+    Node* t;
+    if(p==nullptr)
+    {
+        t=new Node;
+        t->data=key;
+        t->lchild=t->rchild=nullptr;
+        return t;
+    }
+    if(key<p->data)
+    {
+        p->lchild=Rinsert(p->lchild,key);
+    }
+    else if(key>p->data)
+    {
+        p->rchild=Rinsert(p->rchild,key);
+    }
+    return p;
+}
+void BinaryTree::levelOrder(Node* p)
+{
+    Queue q(100);
+    q.enqueue(p);
+    cout<<p->data<<" ";
+    while(!q.isEmpty())
+    {
+        p=q.dequeue();
+        if(p->lchild){q.enqueue(p->lchild);cout<<p->lchild->data<<" ";}
+        if(p->rchild){q.enqueue(p->rchild);cout<<p->rchild->data<<" ";}
+    }
+}
+void BinaryTree::Inorder(Node *q)
+{
+    if(q)
+    {
+        Inorder(q->lchild);
+        cout<<q->data<<" ";
+        Inorder(q->rchild);
+    }
+}
+
+
+int BinaryTree::Height(Node* p)
+{
+    if(p==nullptr){return 0;}
+
+        int x,y;
+        x=Height(p->lchild);
+        y=Height(p->rchild);
+        return x>y ? x+1 : y+1;
+
+}
+   Node* BinaryTree::InPre(Node* p)
+   {
+       while(p&&p->rchild!=nullptr){p=p->rchild;}
+       return p;
+   }
+   Node* BinaryTree::InSucc(Node *p)
+   {
+       while(p&&p->lchild!=nullptr)
+       {
+           p=p->lchild;
+       }
+       return p;
+   }
+
+Node* BinaryTree::Delete(Node* p,int key)
+{
+    Node* q;
+    if(p==nullptr)
+    {
+        return nullptr;
+    }
+    if(p->lchild==nullptr&&p->rchild==nullptr)
+    {
+        if(p==root){delete p;}
+        return nullptr;
+    }
+    if(key<p->data)
+    {
+        p->lchild=Delete(p->lchild,key);
+    }
+    else if(key>p->data)
+    {
+        p->rchild=Delete(p->rchild,key);
+    }
+    else
+    {
+        if(Height(p->lchild)>Height(p->rchild))
+        {
+            q=InPre(p->lchild);
+            p->data=q->data;
+            p->lchild=Delete(p->lchild,q->data);
+        }
+        else if(Height(p->lchild)<Height(p->rchild))
+        {
+            q=InSucc(p->rchild);
+            p->data=q->data;
+            p->rchild=Delete(p->rchild,q->data);
+        }
+    }
+    return p;
+}
+void BinaryTree::preorder(Node *p)
+{
+    if(p)
+    {
+        cout<<p->data<<" ";
+        preorder(p->lchild);
+        preorder(p->rchild);
+    }
+}
+void BinaryTree::createBTreeFromPreorder(int *pre,int n)
+{
+       stack<Node*> s;
+       int i=0;
+       Node* t;
+       Node* p;
+       root=new Node;
+       root->data=pre[i++];
+       root->lchild=nullptr;root->rchild=nullptr;
+       p=root;
+       while(i<n)
+       {
+           if(p->data>pre[i])
+           {
+               t=new Node;
+               t->data=pre[i++];
+               t->lchild=nullptr;t->rchild=nullptr;
+               p->lchild=t;
+               s.push(p);
+               p=t;
+
+           }
+           else
+           {
+               if(pre[i]>p->data && pre[i] < (s.empty()?32767:s.top()->data))
+               {
+                   t=new Node;
+                   t->data=pre[i++];
+                   t->lchild=nullptr;t->rchild=nullptr;
+                   p->rchild=t;
+                   p=t;
+               }
+               else
+               {
+
+                   p=s.top();
+                   s.pop();
+               }
+           }
+       }
+}
+
+
+int main()
+{
+    BinaryTree t;
+    int pre[]={30,20,10,15,25,40,50,45};
+    int n=(sizeof(pre)/sizeof(pre[0]));
+    t.createBTreeFromPreorder(pre,n);
+    t.preorder(root);
+    cout<<endl;
+    t.Inorder(root);
+
+
+
+
+
+
+
+return 0;
+}
