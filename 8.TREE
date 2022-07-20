@@ -1,0 +1,156 @@
+#include <iostream>
+#include "queue.h"
+#include "stack.h"
+using namespace std;
+Node* root=nullptr;
+Queue q;
+
+class Tree
+{
+public:
+    Tree()
+    {
+    int x;
+    cout<<"Enter the root value"<<endl;
+    cin>>x;
+    root=new Node;
+    root->data=x;
+    root->lchild=root->rchild=nullptr;
+    q.enqueue(root);
+    }
+    void createTree(Node *p);
+    void preorder(Node *p);
+    void inorder(Node *p);
+    void postorder(Node *p);
+    void iterativePreOrder(Node *p);
+    void iterativeInOrder(Node *p);
+    void iterativePostOrder(Node *p);
+    void levelOrder(Node *p);
+};
+void Tree::createTree(Node *p)
+{
+    int x;
+    Node* t;
+    while(!q.isEmpty())
+    {
+        p=q.dequeue();
+        cout<<"Enter the left child of "<<p->data<<endl;
+        cin>>x;
+        if(x!=-1)
+        {
+         t=new Node;
+         q.enqueue(t);
+         t->data=x;
+         p->lchild=t;
+
+         t->lchild=t->rchild=nullptr;
+        }
+        cout<<"Enter the right child of "<<p->data<<endl;
+        cin>>x;
+        if(x!=-1)
+        {
+            t=new Node;
+            t->data=x;
+            p->rchild=t;
+            q.enqueue(t);
+            t->lchild=t->rchild=nullptr;
+
+        }
+
+    }
+
+
+
+}
+void Tree::preorder(Node *p)
+{
+    if(p){
+    cout<<p->data<<" ";
+    preorder(p->lchild);
+    preorder(p->rchild);
+    }
+}
+void Tree::inorder(Node *p)
+{
+    if(p)
+    {
+        inorder(p->lchild);
+        cout<<p->data<<" ";
+        inorder(p->rchild);
+    }
+}
+void Tree::postorder(Node *p)
+{
+    if(p)
+    {
+        postorder(p->lchild);
+        postorder(p->rchild);
+        cout<<p->data<<" ";
+    }
+}
+void Tree::iterativePreOrder(Node *p)
+{
+    Stack s(100);
+    while(p!=nullptr||!s.isEmpty())
+    {
+        if(p)
+        {
+            cout<<p->data<<" ";
+            s.push(p);
+            p=p->lchild;
+        }
+        else
+        {
+            p=s.pop();
+            p=p->rchild;
+        }
+    }
+}
+void Tree::iterativeInOrder(Node *p)
+{
+    Stack s(100);
+    while(p!=nullptr||!s.isEmpty())
+    {
+        if(p)
+        {
+            s.push(p);
+            p=p->lchild;
+        }
+        else{
+            p=s.pop();
+            cout<<p->data<<" ";
+            p=p->rchild;
+        }
+    }
+}
+void Tree::levelOrder(Node *p)
+{
+    Queue q(100);
+    q.enqueue(p);
+    cout<<p->data;
+    while(!q.isEmpty())
+    {
+       p=q.dequeue();
+       if(p->lchild)
+       {
+           cout<<p->lchild->data<<" ";
+           q.enqueue(p->lchild);
+       }
+       if(p->rchild)
+       {
+           cout<<p->rchild->data<<" ";
+           q.enqueue(p->rchild);
+       }
+
+    }
+}
+
+
+
+int main()
+{
+    Tree t;
+    t.createTree(root);
+    t.levelOrder(root);
+
+}
