@@ -1,0 +1,88 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+#include "queue.h"
+using namespace std;
+
+ int A[8][8]={{0,0,0,0,0,0,0,0},{0,0,1,1,1,0,0,0},{0,1,0,1,0,0,0,0},{0,1,1,0,1,1,0,0},
+                {0,1,0,1,0,1,0,0},{0,0,0,1,1,0,1,1},{0,0,0,0,0,1,0,0},{0,0,0,0,0,1,0,0}};
+    int visited[8]={0};
+    Queue q(50);
+    
+void BFS(int i)
+{
+    int e;
+    cout<<i<<" ";
+    visited[i]++;
+    q.enqueue(i);
+    while(!q.isEmpty())
+    {
+        e=q.dequeue();
+        for(int v=1;v<=7;v++)
+        {
+        if(A[e][v]==1 && visited[v]!=1)
+        {
+            cout<<v<<" ";
+            visited[v]=1;
+            q.enqueue(v);
+        }
+        }
+    }
+}
+
+int main()
+{
+   BFS(7);
+                
+                
+}
+
+QUEUE.h:
+class Queue
+{
+  private:
+  int sizee;
+  int *B;
+  int front,rear;
+  public:
+  Queue(int sizee)
+  {
+      this->sizee=sizee;
+      B=new int[sizee];
+      front=rear=-1;
+  }
+  int isFull()
+  {
+      if(rear==sizee-1){return 1;}
+      return 0;
+  }
+  int isEmpty()
+  {
+      if(front==rear){return 1;}
+      return 0;
+  }
+  void enqueue(int x)
+  {
+      if(!isFull()){
+      rear++;
+      B[rear]=x;
+      }
+  }
+  int dequeue()
+  {
+      int x=-1;
+      if(!isEmpty())
+      {
+          front++;
+          x=B[front];
+      }
+      return x;
+  }
+  
+};
